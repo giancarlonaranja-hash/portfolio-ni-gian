@@ -22,6 +22,7 @@ const hireForm = document.querySelector("#hire-form");
 const hireMeButton = document.querySelector("#hire-me-button");
 const coinBurst = document.querySelector("#coin-burst");
 const submitButton = document.querySelector("#hire-form button[type='submit']");
+let coinAudioContext;
 
 const playCoinSound = () => {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -30,28 +31,29 @@ const playCoinSound = () => {
         return;
     }
 
-    const audioContext = new AudioContext();
-    const startTime = audioContext.currentTime + 0.45;
+    coinAudioContext ??= new AudioContext();
 
-    for (let index = 0; index < 10; index += 1) {
-        const oscillator = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-        const pingStart = startTime + index * 0.16;
+    coinAudioContext.resume().then(() => {
+        const startTime = coinAudioContext.currentTime + 0.08;
 
-        oscillator.type = "square";
-        oscillator.frequency.setValueAtTime(720 + (index % 3) * 110, pingStart);
-        oscillator.frequency.exponentialRampToValueAtTime(1180 + (index % 2) * 100, pingStart + 0.06);
-        gain.gain.setValueAtTime(0.0001, pingStart);
-        gain.gain.exponentialRampToValueAtTime(0.16, pingStart + 0.01);
-        gain.gain.exponentialRampToValueAtTime(0.0001, pingStart + 0.13);
+        for (let index = 0; index < 12; index += 1) {
+            const oscillator = coinAudioContext.createOscillator();
+            const gain = coinAudioContext.createGain();
+            const pingStart = startTime + index * 0.16;
 
-        oscillator.connect(gain);
-        gain.connect(audioContext.destination);
-        oscillator.start(pingStart);
-        oscillator.stop(pingStart + 0.15);
-    }
+            oscillator.type = "triangle";
+            oscillator.frequency.setValueAtTime(620 + (index % 4) * 130, pingStart);
+            oscillator.frequency.exponentialRampToValueAtTime(1220 + (index % 3) * 100, pingStart + 0.07);
+            gain.gain.setValueAtTime(0.0001, pingStart);
+            gain.gain.exponentialRampToValueAtTime(0.3, pingStart + 0.01);
+            gain.gain.exponentialRampToValueAtTime(0.0001, pingStart + 0.15);
 
-    window.setTimeout(() => audioContext.close(), 2_200);
+            oscillator.connect(gain);
+            gain.connect(coinAudioContext.destination);
+            oscillator.start(pingStart);
+            oscillator.stop(pingStart + 0.17);
+        }
+    });
 };
 
 hireMeButton?.addEventListener("click", (event) => {
