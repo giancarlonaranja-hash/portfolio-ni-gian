@@ -415,7 +415,7 @@ section {
     text-align: center;
     font-weight: 700;
     letter-spacing: 0.04em;
-    color: var(--text);
+    color: #000000;
     transition: transform 0.25s ease, border-color 0.25s ease;
 }
 
@@ -464,7 +464,7 @@ section {
 
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.4rem;
 }
 
@@ -532,6 +532,60 @@ section {
     font-size: clamp(2rem, 4vw, 3rem);
 }
 
+.contact-email {
+    margin-top: 0.8rem;
+    color: #000000;
+    font-size: 1rem;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.contact-panel + .hire-form {
+    margin-top: 1.25rem;
+}
+
+.hire-form {
+    padding: 1.5rem;
+    background: var(--panel);
+    border: 3px solid #fff7df;
+    box-shadow: var(--shadow);
+}
+
+.hire-form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.hire-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin-bottom: 1rem;
+    color: var(--text);
+    font-weight: 700;
+}
+
+.hire-form input,
+.hire-form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid #63351f;
+    border-radius: 0;
+    background: #fff7df;
+    color: #000000;
+    font: inherit;
+}
+
+.hire-form textarea {
+    resize: vertical;
+}
+
+.hire-form .primary-btn {
+    border: 3px solid #fff7df;
+    cursor: pointer;
+}
+
 footer {
     padding: 0 0 2rem;
     text-align: center;
@@ -573,6 +627,10 @@ footer {
 }
 
 @media (max-width: 900px) {
+    .page-shell {
+        width: min(100% - 32px, 900px);
+    }
+
     .topbar {
         flex-direction: column;
         padding-bottom: 1rem;
@@ -599,6 +657,12 @@ footer {
     .info-panel,
     .showcase-card {
         min-width: 0;
+    }
+}
+
+@media (min-width: 901px) and (max-width: 1100px) {
+    .hero h1 {
+        max-width: 760px;
     }
 }
 
@@ -670,5 +734,10 @@ footer {
 
     .contact-panel .primary-btn {
         width: 100%;
+    }
+
+    .hire-form-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
     }
 }

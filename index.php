@@ -225,7 +225,7 @@ php
 
             <p>Feel free to contact me!</p>
 
-            <a href="mailto:your@email.com" class="btn">
+            <a href="mailto:giancarlonaranja@gmail.com" class="btn">
                 Send Me an Email
             </a>
 

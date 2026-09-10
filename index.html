@@ -20,7 +20,7 @@
                 <a href="#contact">Contact</a>
             </nav>
 
-            <a href="#contact" class="nav-btn">Start Game</a>
+            <a href="#contact" class="nav-btn">Hire Me</a>
         </header>
 
         <main>
@@ -219,9 +219,35 @@
                     <div>
                         <p class="eyebrow">Contact</p>
                         <h2>Ready to build something amazing?</h2>
+                        <p class="contact-email">giancarlonaranja@gmail.com</p>
                     </div>
-                    <a href="mailto:your@email.com" class="primary-btn">Send Me an Email</a>
+                    <button type="button" class="primary-btn" id="open-contact-form" aria-expanded="false" aria-controls="hire-form">
+                        Send Me an Email
+                    </button>
                 </div>
+
+                <form class="hire-form" id="hire-form" hidden>
+                    <p class="eyebrow">Player Contact Form</p>
+                    <div class="hire-form-grid">
+                        <label>
+                            Given Name
+                            <input type="text" name="given-name" required>
+                        </label>
+                        <label>
+                            Middle Name
+                            <input type="text" name="middle-name">
+                        </label>
+                        <label>
+                            Surname
+                            <input type="text" name="surname" required>
+                        </label>
+                    </div>
+                    <label>
+                        Why do you want to hire me?
+                        <textarea name="hire-reason" rows="5" required></textarea>
+                    </label>
+                    <button type="submit" class="primary-btn">Submit</button>
+                </form>
             </section>
         </main>
 
