@@ -181,10 +181,12 @@ button, a {
     margin-bottom: 1rem;
     max-width: 620px;
     color: #000000;
+    text-shadow: 3px 3px 0 #fff7df, 6px 6px 0 #63351f;
 }
 
 .hero h1 span {
     color: var(--primary);
+    font: inherit;
     text-shadow: 3px 3px 0 #fff7df, 6px 6px 0 #63351f;
 }
 
