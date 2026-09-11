@@ -110,7 +110,12 @@ const motionElements = document.querySelectorAll(
 if ("IntersectionObserver" in window) {
     const motionObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-            entry.target.classList.toggle("is-visible", entry.isIntersecting);
+            if (!entry.isIntersecting) {
+                return;
+            }
+
+            entry.target.classList.add("is-visible");
+            motionObserver.unobserve(entry.target);
         });
     }, { threshold: 0.15 });
 
@@ -122,11 +127,56 @@ if ("IntersectionObserver" in window) {
 const contactButton = document.querySelector("#open-contact-form");
 const hireForm = document.querySelector("#hire-form");
 const hireMeButton = document.querySelector("#hire-me-button");
+const viewWorkButton = document.querySelector("#view-work-button");
 const letsTalkButton = document.querySelector("#lets-talk-button");
 const thankYouScene = document.querySelector("#thank-you-scene");
 const coinBurst = document.querySelector("#coin-burst");
 const submitButton = document.querySelector("#hire-form button[type='submit']");
 let coinAudioContext;
+
+const showCoinPop = (button) => {
+    if (!coinBurst || !(button instanceof Element)) {
+        return;
+    }
+
+    const buttonRect = button.getBoundingClientRect();
+    const coin = document.createElement("span");
+    coin.className = "coin-pop";
+    coin.style.setProperty("--coin-pop-x", `${buttonRect.left + buttonRect.width / 2}px`);
+    coin.style.setProperty("--coin-pop-y", `${buttonRect.top + buttonRect.height / 2}px`);
+    coinBurst.appendChild(coin);
+
+    requestAnimationFrame(() => coin.classList.add("is-active"));
+    window.setTimeout(() => coin.remove(), 1_000);
+};
+
+const playCoinPopSound = () => {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+
+    if (!AudioContext) {
+        return;
+    }
+
+    coinAudioContext ??= new AudioContext();
+    void coinAudioContext.resume().then(() => {
+        const startTime = coinAudioContext.currentTime;
+        [988, 1480].forEach((frequency, index) => {
+            const oscillator = coinAudioContext.createOscillator();
+            const gain = coinAudioContext.createGain();
+            const noteStart = startTime + index * 0.09;
+
+            oscillator.type = "square";
+            oscillator.frequency.setValueAtTime(frequency, noteStart);
+            gain.gain.setValueAtTime(0.0001, noteStart);
+            gain.gain.exponentialRampToValueAtTime(0.2, noteStart + 0.01);
+            gain.gain.exponentialRampToValueAtTime(0.0001, noteStart + 0.16);
+            oscillator.connect(gain);
+            gain.connect(coinAudioContext.destination);
+            oscillator.start(noteStart);
+            oscillator.stop(noteStart + 0.18);
+        });
+    });
+};
 
 const playCoinSound = () => {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -210,6 +260,8 @@ document.addEventListener("pointerdown", (event) => {
 
 hireMeButton?.addEventListener("click", (event) => {
     event.preventDefault();
+    showCoinPop(hireMeButton);
+    playCoinPopSound();
     showThankYouScene();
 
     if (!hireForm) {
@@ -220,6 +272,15 @@ hireMeButton?.addEventListener("click", (event) => {
     contactButton?.setAttribute("aria-expanded", "true");
     hireForm.scrollIntoView({ behavior: "smooth", block: "center" });
     hireForm.querySelector("input")?.focus();
+});
+
+viewWorkButton?.addEventListener("click", (event) => {
+    event.preventDefault();
+    showCoinPop(viewWorkButton);
+    playCoinPopSound();
+    window.setTimeout(() => {
+        document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 450);
 });
 
 letsTalkButton?.addEventListener("click", () => {
@@ -269,7 +330,7 @@ hireForm?.addEventListener("submit", (event) => {
         const originX = buttonRect ? buttonRect.left + buttonRect.width / 2 : window.innerWidth / 2;
         const originY = buttonRect ? buttonRect.top + buttonRect.height / 2 : window.innerHeight / 2;
 
-        for (let index = 0; index < 24; index += 1) {
+        for (let index = 0; index < 12; index += 1) {
             const coin = document.createElement("span");
             coin.className = "coin";
             coin.style.setProperty("--coin-origin-x", `${originX}px`);
@@ -278,8 +339,8 @@ hireForm?.addEventListener("submit", (event) => {
             coin.style.setProperty("--coin-start-y", `${5 + Math.random() * 60}vh`);
             coin.style.setProperty("--coin-fall-x", `${-120 + Math.random() * 240}px`);
             coin.style.setProperty("--coin-arc", `${-140 - Math.random() * 240}px`);
-            coin.style.setProperty("--coin-delay", `${index * 35}ms`);
-            coin.style.setProperty("--coin-duration", `${2.4 + Math.random() * 1.1}s`);
+            coin.style.setProperty("--coin-delay", `${index * 25}ms`);
+            coin.style.setProperty("--coin-duration", `${1.8 + Math.random() * 0.7}s`);
             coinBurst.appendChild(coin);
         }
 
