@@ -56,6 +56,46 @@ const playCoinSound = () => {
     });
 };
 
+const playButtonSound = () => {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+
+    if (!AudioContext) {
+        return;
+    }
+
+    coinAudioContext ??= new AudioContext();
+
+    coinAudioContext.resume().then(() => {
+        const oscillator = coinAudioContext.createOscillator();
+        const gain = coinAudioContext.createGain();
+        const startTime = coinAudioContext.currentTime;
+
+        oscillator.type = "square";
+        oscillator.frequency.setValueAtTime(440, startTime);
+        oscillator.frequency.exponentialRampToValueAtTime(660, startTime + 0.08);
+        gain.gain.setValueAtTime(0.0001, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.32, startTime + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.1);
+
+        oscillator.connect(gain);
+        gain.connect(coinAudioContext.destination);
+        oscillator.start(startTime);
+        oscillator.stop(startTime + 0.11);
+    });
+};
+
+document.addEventListener("click", (event) => {
+    const target = event.target;
+
+    if (!(target instanceof Element)) {
+        return;
+    }
+
+    if (target.closest("button, .nav-btn, .primary-btn, .secondary-btn")) {
+        playButtonSound();
+    }
+});
+
 hireMeButton?.addEventListener("click", (event) => {
     event.preventDefault();
 

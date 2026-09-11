@@ -370,7 +370,7 @@ button, a {
 }
 
 .intro-welcome .welcome-copy h1 {
-    margin-bottom: 0.7rem;
+    margin-bottom: 1.6rem;
     color: #000000;
     font-size: clamp(2rem, 5vw, 3.8rem);
     line-height: 1.05;
