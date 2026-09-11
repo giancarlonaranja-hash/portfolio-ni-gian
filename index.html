@@ -8,11 +8,35 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="loading-screen" id="loading-screen" role="status" aria-live="polite">
+        <span class="loading-pixel loading-pixel-one" aria-hidden="true">+</span>
+        <span class="loading-pixel loading-pixel-two" aria-hidden="true">★</span>
+        <span class="loading-pixel loading-pixel-three" aria-hidden="true">+</span>
+        <div class="loading-coins" aria-hidden="true">
+            <span>★</span><span>★</span><span>★</span><span>★</span>
+            <span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+        <div class="loading-box">
+            <div class="loading-world">WORLD 1-1 <span>●</span> PLAYER 1</div>
+            <div class="loading-logo">GIAN<span>WORLD</span></div>
+            <p>Loading level...</p>
+            <div class="loading-progress" aria-hidden="true"><span></span></div>
+            <div class="loading-footer"><span>INSERT COIN</span><strong>● ● ●</strong></div>
+        </div>
+    </div>
     <div class="arcade-background" aria-hidden="true">
         <div class="bg-hero bg-hero-red"></div>
         <div class="bg-hero bg-hero-green"></div>
+        <div class="bg-hero bg-hero-yellow"></div>
         <div class="bg-monster bg-monster-orange"></div>
         <div class="bg-monster bg-monster-purple"></div>
+        <div class="bg-monster bg-monster-blue"></div>
+        <div class="bg-tree bg-tree-left"><span></span></div>
+        <div class="bg-tree bg-tree-right"><span></span></div>
+        <div class="bg-pipe bg-pipe-left"><span></span></div>
+        <div class="bg-pipe bg-pipe-right"><span></span></div>
+        <div class="bg-cloud bg-cloud-one"></div>
+        <div class="bg-cloud bg-cloud-two"></div>
         <div class="bg-block bg-block-one">?</div>
         <div class="bg-block bg-block-two">★</div>
     </div>

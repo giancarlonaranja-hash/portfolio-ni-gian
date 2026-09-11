@@ -1,5 +1,107 @@
 console.log("Welcome to my portfolio!");
 
+const loadingScreen = document.querySelector("#loading-screen");
+
+const prepareLoadingAudio = () => {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+
+    if (!AudioContext) {
+        return;
+    }
+
+    coinAudioContext ??= new AudioContext();
+    void coinAudioContext.resume();
+};
+
+const playLoadingCoinSound = () => {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+
+    if (!AudioContext) {
+        return;
+    }
+
+    coinAudioContext ??= new AudioContext();
+
+    void coinAudioContext.resume().then(() => {
+        const startTime = coinAudioContext.currentTime;
+        const notes = [740, 988, 1318];
+
+        notes.forEach((frequency, index) => {
+            const oscillator = coinAudioContext.createOscillator();
+            const gain = coinAudioContext.createGain();
+            const noteStart = startTime + index * 0.11;
+
+            oscillator.type = "sine";
+            oscillator.frequency.setValueAtTime(frequency, noteStart);
+            gain.gain.setValueAtTime(0.0001, noteStart);
+            gain.gain.exponentialRampToValueAtTime(0.24, noteStart + 0.015);
+            gain.gain.exponentialRampToValueAtTime(0.0001, noteStart + 0.28);
+            oscillator.connect(gain);
+            gain.connect(coinAudioContext.destination);
+            oscillator.start(noteStart);
+            oscillator.stop(noteStart + 0.3);
+        });
+    });
+};
+
+let loadingTimer;
+let loadingAudioUnlocked = false;
+
+const completeLoading = (playSound = false) => {
+    window.clearTimeout(loadingTimer);
+    loadingScreen?.classList.add("is-complete");
+
+    if (playSound) {
+        playLoadingCoinSound();
+    }
+
+    loadingTimer = window.setTimeout(hideLoadingScreen, 420);
+};
+
+const hideLoadingScreen = () => {
+    loadingScreen?.classList.add("is-hidden");
+};
+
+window.addEventListener("load", () => {
+    loadingTimer = window.setTimeout(() => completeLoading(), 1_150);
+});
+
+document.addEventListener("click", (event) => {
+    const target = event.target;
+
+    if (!(target instanceof Element)) {
+        return;
+    }
+
+    const link = target.closest("a");
+
+    if (
+        !link ||
+        link.target === "_blank" ||
+        link.hasAttribute("download") ||
+        link.matches(".nav-btn, .primary-btn, .secondary-btn, .welcome-start")
+    ) {
+        return;
+    }
+
+    const href = link.getAttribute("href");
+
+    if (!href || href.startsWith("mailto:") || href.startsWith("javascript:")) {
+        return;
+    }
+
+    loadingScreen?.classList.remove("is-hidden");
+    loadingScreen?.classList.remove("is-complete");
+    loadingAudioUnlocked = true;
+    prepareLoadingAudio();
+    window.clearTimeout(loadingTimer);
+    loadingTimer = window.setTimeout(() => completeLoading(loadingAudioUnlocked), 1_150);
+
+    if (href.startsWith("#")) {
+        return;
+    }
+});
+
 const motionElements = document.querySelectorAll(
     ".hero-copy, .hero-visual, .section-heading, .about-copy, .info-panel, " +
     ".skill-card, .process-card, .project-card, .contact-panel, .hire-form"
