@@ -8,6 +8,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="arcade-background" aria-hidden="true">
+        <div class="bg-hero bg-hero-red"></div>
+        <div class="bg-hero bg-hero-green"></div>
+        <div class="bg-monster bg-monster-orange"></div>
+        <div class="bg-monster bg-monster-purple"></div>
+        <div class="bg-block bg-block-one">?</div>
+        <div class="bg-block bg-block-two">★</div>
+    </div>
     <div class="page-shell">
         <header class="topbar">
             <div class="logo">Gian<span>World</span></div>
@@ -72,7 +80,7 @@
 
                     <div class="cta-row">
                         <a href="#projects" class="primary-btn">View My Work</a>
-                        <a href="#contact" class="secondary-btn">Let’s Talk</a>
+                        <a href="#contact" class="secondary-btn" id="lets-talk-button">Let’s Talk</a>
                     </div>
 
                     <div class="quick-stats">
@@ -287,11 +295,11 @@
                 </form>
             </section>
 
-            <section class="welcome-scene thank-you-scene" aria-label="Thank you message">
+            <section class="welcome-scene thank-you-scene" id="thank-you-scene" aria-label="Thank you message" hidden>
                 <div class="welcome-copy">
                     <p class="eyebrow">Thank You, Player!</p>
                     <h2>Thanks for reaching out!</h2>
-                    <p>Your message is on its way. I appreciate your interest and will get back to you soon.</p>
+                    <p>Ready to start a new adventure? I appreciate your interest and look forward to connecting with you.</p>
                 </div>
                 <div class="pixel-heroes" aria-hidden="true">
                     <div class="pixel-hero red-hero">

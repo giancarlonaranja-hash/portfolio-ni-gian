@@ -20,6 +20,8 @@ if ("IntersectionObserver" in window) {
 const contactButton = document.querySelector("#open-contact-form");
 const hireForm = document.querySelector("#hire-form");
 const hireMeButton = document.querySelector("#hire-me-button");
+const letsTalkButton = document.querySelector("#lets-talk-button");
+const thankYouScene = document.querySelector("#thank-you-scene");
 const coinBurst = document.querySelector("#coin-burst");
 const submitButton = document.querySelector("#hire-form button[type='submit']");
 let coinAudioContext;
@@ -65,26 +67,34 @@ const playButtonSound = () => {
 
     coinAudioContext ??= new AudioContext();
 
-    coinAudioContext.resume().then(() => {
-        const oscillator = coinAudioContext.createOscillator();
-        const gain = coinAudioContext.createGain();
-        const startTime = coinAudioContext.currentTime;
+    const oscillator = coinAudioContext.createOscillator();
+    const gain = coinAudioContext.createGain();
+    const startTime = coinAudioContext.currentTime;
 
-        oscillator.type = "square";
-        oscillator.frequency.setValueAtTime(440, startTime);
-        oscillator.frequency.exponentialRampToValueAtTime(660, startTime + 0.08);
-        gain.gain.setValueAtTime(0.0001, startTime);
-        gain.gain.exponentialRampToValueAtTime(0.32, startTime + 0.01);
-        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.1);
+    oscillator.type = "square";
+    oscillator.frequency.setValueAtTime(440, startTime);
+    oscillator.frequency.exponentialRampToValueAtTime(660, startTime + 0.08);
+    gain.gain.setValueAtTime(0.0001, startTime);
+    gain.gain.exponentialRampToValueAtTime(0.32, startTime + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.1);
 
-        oscillator.connect(gain);
-        gain.connect(coinAudioContext.destination);
-        oscillator.start(startTime);
-        oscillator.stop(startTime + 0.11);
-    });
+    oscillator.connect(gain);
+    gain.connect(coinAudioContext.destination);
+    oscillator.start(startTime);
+    oscillator.stop(startTime + 0.11);
+    void coinAudioContext.resume();
 };
 
-document.addEventListener("click", (event) => {
+const showThankYouScene = () => {
+    if (!thankYouScene) {
+        return;
+    }
+
+    thankYouScene.hidden = false;
+    thankYouScene.classList.add("is-visible");
+};
+
+document.addEventListener("pointerdown", (event) => {
     const target = event.target;
 
     if (!(target instanceof Element)) {
@@ -98,6 +108,7 @@ document.addEventListener("click", (event) => {
 
 hireMeButton?.addEventListener("click", (event) => {
     event.preventDefault();
+    showThankYouScene();
 
     if (!hireForm) {
         return;
@@ -109,7 +120,13 @@ hireMeButton?.addEventListener("click", (event) => {
     hireForm.querySelector("input")?.focus();
 });
 
+letsTalkButton?.addEventListener("click", () => {
+    showThankYouScene();
+});
+
 contactButton?.addEventListener("click", () => {
+    showThankYouScene();
+
     if (!hireForm) {
         return;
     }
