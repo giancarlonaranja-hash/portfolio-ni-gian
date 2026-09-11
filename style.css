@@ -261,7 +261,7 @@ body::before {
 }
 
 .arcade-background {
-    position: absolute;
+    position: fixed;
     right: 0;
     bottom: 0;
     left: 0;
@@ -302,7 +302,7 @@ body::before {
 .bg-cloud {
     position: absolute;
     opacity: 1;
-    filter: saturate(1);
+    will-change: transform;
 }
 
 .bg-hero {
@@ -1370,6 +1370,18 @@ section {
     padding: 4rem 0;
 }
 
+#contact {
+    position: relative;
+    padding-bottom: 18rem;
+}
+
+#contact > .contact-panel,
+#contact > .hire-form,
+#contact > .thank-you-scene {
+    position: relative;
+    z-index: 2;
+}
+
 .section-heading {
     margin-bottom: 2rem;
 }
@@ -1552,6 +1564,7 @@ section {
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
+    margin: 0 14%;
     padding: 2rem;
     background: linear-gradient(135deg, var(--primary) 0 50%, var(--accent) 50% 100%);
     border: 3px solid #fff7df;
@@ -1640,6 +1653,7 @@ section {
     background: #ffc928;
     box-shadow: inset 5px 0 0 #fff0a3, 5px 5px 0 #63351f;
     opacity: 0;
+    will-change: transform, opacity;
 }
 
 .coin::after {
@@ -1654,6 +1668,57 @@ section {
 
 .coin-burst.is-active .coin {
     animation: coin-explode var(--coin-duration) cubic-bezier(0.2, 0.8, 0.3, 1) var(--coin-delay) forwards;
+}
+
+.coin-pop {
+    position: fixed;
+    left: var(--coin-pop-x);
+    top: var(--coin-pop-y);
+    z-index: 101;
+    width: 132px;
+    height: 132px;
+    border: 8px solid #9a6500;
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 25%, #fff4a8 0 10%, #ffd52f 28%, #f2a900 100%);
+    box-shadow: inset 11px 0 0 #fff0a3, 9px 10px 0 #63351f;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.2);
+    will-change: transform, opacity;
+}
+
+.coin-pop::after {
+    content: "★";
+    display: grid;
+    place-items: center;
+    height: 100%;
+    color: #9a6500;
+    font-size: 5rem;
+    font-weight: 900;
+    text-shadow: 2px 2px 0 #fff0a3;
+}
+
+.coin-pop.is-active {
+    animation: coin-pop 0.9s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes coin-pop {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.2) rotate(-25deg);
+    }
+    25% {
+        opacity: 1;
+        transform: translate(-50%, calc(-100% - 26px)) scale(1.18) rotate(8deg);
+    }
+    65% {
+        opacity: 1;
+        transform: translate(-50%, calc(-100% - 46px)) scale(1) rotate(-5deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, calc(-100% - 100px)) scale(0.72) rotate(18deg);
+    }
 }
 
 .hire-form .primary-btn.is-shaking {
@@ -1741,6 +1806,7 @@ footer {
     .contact-panel {
         flex-direction: column;
         align-items: flex-start;
+        margin: 0 14%;
     }
 
     .projects-grid {
@@ -1853,7 +1919,12 @@ footer {
     }
 
     .contact-panel {
+        margin: 0 10%;
         padding: 1.4rem;
+    }
+
+    #contact {
+        padding-bottom: 14rem;
     }
 
     .contact-panel .primary-btn {
